@@ -1,0 +1,29 @@
+service: api-petShop
+frameworkVersion: "3"
+
+params:
+  dev:
+    jwtSecret: #putyourjwtsecrethere
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    JWT_SECRET: ${param:jwtSecret}
+
+functions:
+  registerPet:
+    handler: /application/api/registerPet.handler
+    events:
+      - httpApi:
+          path: /api/pet
+          method: post
+  listPets:
+    handler: /application/api/listPets.handler
+    events:
+      - httpApi:
+          path: /api/pet
+          method: get
+
+plugins:
+  - serverless-offline
