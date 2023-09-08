@@ -1,0 +1,82 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+}
+
+.card {
+  width: 60%;
+  height: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background-color: var(--color-orange);
+}
+
+.brand h1 {
+  font-size: 4rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--color-light);
+}
+
+.form h2 {
+  font-size: 2.4rem;
+  color: var(--color-orange);
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  color: var(--color-black);
+  font-weight: normal;
+  margin-top: 14px;
+}
+
+.form label input {
+  margin-top: 8px;
+  padding-left: 6px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid var(--color-input);
+}
+
+.form button {
+  color: var(--color-black-dark);
+  width: 30%;
+  height: 48px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  border: 2px solid var(--color-green);
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.form button:hover {
+  color: var(--color-black);
+  box-shadow: 0 0 40px 40px var(--color-green) inset;
+}
+
+.errorMessage {
+  font-size: 0.8rem;
+  margin: 2px 0px 16px 0px;
+  text-align: center;
+  color: var(--color-error);
+}

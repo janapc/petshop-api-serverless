@@ -1,0 +1,134 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.card {
+  width: 60%;
+  height: max-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.brand {
+  background-color: var(--color-orange);
+  display: flex;
+}
+
+.brand h1 {
+  font-size: 6rem;
+  align-self: center;
+  margin: 0 auto;
+}
+
+.btnGoBack {
+  padding: 8px;
+  align-self: flex-start;
+}
+
+.content {
+  background-color: var(--color-light);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form h2 {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  color: var(--color-orange);
+}
+
+.form label {
+  display: flex;
+  font-size: 0.9rem;
+  flex-direction: column;
+  color: var(--color-black);
+  width: 100%;
+  font-weight: normal;
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+
+.form label input {
+  margin-top: 4px;
+  padding-left: 6px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid var(--color-input);
+}
+
+.form button {
+  color: var(--color-black-dark);
+  font-size: 1.2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  height: 48px;
+  border: 2px solid var(--color-green);
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.form button:hover {
+  color: var(--color-black);
+  box-shadow: 0 0 40px 40px var(--color-green) inset;
+}
+
+.errorMessage {
+  font-size: 0.8rem;
+  margin: 2px 0px 16px 0px;
+  text-align: center;
+  color: var(--color-error);
+}
+
+.separator {
+  align-self: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.contentFile {
+  margin: 16px 0px;
+  border: 2px solid var(--color-green);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  height: max-content;
+}
+
+.contentFile input {
+  height: 100%;
+}
+
+.contentFile input::file-selector-button {
+  font-weight: bold;
+  background-color: #f5f5f5;
+  border: none;
+  color: var(--color-black-dark);
+  padding: 8px;
+  height: 100%;
+}
+
+.contentFile button {
+  background-color: var(--color-green);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  font-weight: 700;
+}

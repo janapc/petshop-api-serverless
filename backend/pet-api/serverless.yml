@@ -1,0 +1,88 @@
+service: api-petShop
+frameworkVersion: "3"
+
+params:
+  dev:
+    jwtSecret: #putyourjwtsecrethere
+    accessKeyIdS3: "S3RVER"
+    secretAccessKeyS3: "S3RVER"
+    endpointS3: "http://localhost:4569"
+    bucketS3: "pets-csv"
+
+resources:
+  extensions:
+    S3BucketPetscsv:
+      Properties:
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+                - POST
+                - GET
+                - OPTIONS
+              AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    JWT_SECRET: ${param:jwtSecret}
+    S3_ACCESSKEY: ${param:accessKeyIdS3}
+    S3_SECRETKEY: ${param:secretAccessKeyS3}
+    S3_ENDPOINT: ${param:endpointS3}
+    S3_BUCKET: ${param:bucketS3}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::pets-csv/*
+
+functions:
+  uploadPetsByCsv:
+    handler: /application/api/uploadPetsByCsv.handler
+    events:
+      - httpApi:
+          path: /api/pet/batch
+          method: post
+
+  registerPetsByCsv:
+    handler: /application/api/registerPetsByCsv.handler
+    events:
+      - s3:
+          bucket: ${param:bucketS3}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .csv
+
+  registerPet:
+    handler: /application/api/registerPet.handler
+    events:
+      - httpApi:
+          path: /api/pet
+          method: post
+  listPets:
+    handler: /application/api/listPets.handler
+    events:
+      - httpApi:
+          path: /api/pet
+          method: get
+  search:
+    handler: /application/api/search.handler
+    events:
+      - httpApi:
+          path: /api/pet/search
+          method: get
+custom:
+  serverless-offline:
+    httpPort: 5000
+    websocketPort: 5001
+    lambdaPort: 5002
+
+plugins:
+  - serverless-offline
+  - serverless-s3-local

@@ -1,0 +1,19 @@
+{
+  "name": "@janapc/user-api",
+  "version": "1.0.0",
+  "description": "api to manager users",
+  "main": "index.js",
+  "scripts": {
+    "offline:user": "npx sls offline start --reloadHandler"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.1",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "serverless-offline": "^12.0.4"
+  }
+}

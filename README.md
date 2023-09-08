@@ -30,11 +30,14 @@ Put your jwtSecret inside **user-api/serverless.yml** and **pet-api/serverless.y
 ## install dependences inside each folders
 ❯ npm i
 
-## run project user-api offline
-❯ cd user-api && npm run offline:user
+## run project user-api offline http://localhost:4000
+❯ cd backend/user-api && npm run offline:user
 
-## run project pet-api offline
-❯ cd pet-api && npm run offline:pet
+## run project pet-api offline http://localhost:5000
+❯ cd backend/pet-api && npm run offline:pet
+
+## run project petshop offline http://localhost:3000
+❯ cd petshop && npm run dev
 
 ```
 
@@ -45,7 +48,7 @@ Put your jwtSecret inside **user-api/serverless.yml** and **pet-api/serverless.y
 curl --location 'http://localhost:4000/api/user' \
 --header 'Content-Type: application/json' \
 --data '{
-	"username": "admin",
+	"email": "admin@admin.com",
 	"password":"admin123!"
 }'
 
@@ -53,12 +56,12 @@ curl --location 'http://localhost:4000/api/user' \
 curl --location 'http://localhost:4000/api/user/login' \
 --header 'Content-Type: application/json' \
 --data '{
-	"username": "admin",
+	"email": "admin@admin.com",
 	"password":"admin123!"
 }'
 
 ## register a new pet
-curl --location 'http://localhost:3000/api/pet' \
+curl --location 'http://localhost:5000/api/pet' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: youTokenHere' \
 --data '{
@@ -69,7 +72,7 @@ curl --location 'http://localhost:3000/api/pet' \
 }'
 
 ## list all pets
-curl --location 'http://localhost:3000/api/pet' \
+curl --location 'http://localhost:5000/api/pet' \
 --header 'Authorization: yourTokenHere'
 
 ```
@@ -80,6 +83,7 @@ curl --location 'http://localhost:3000/api/pet' \
 - serverless
 - jsonwebtoken
 - sqlite3
+- s3-bucket
 
 <div align="center">
 

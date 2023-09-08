@@ -1,0 +1,117 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.header {
+  height: max-content;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.btn {
+  height: 42px;
+  padding: 0px 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.btnLogout {
+  background-color: var(--color-green);
+  color: var(--color-black);
+  transition: background-color 300ms ease-in-out;
+}
+
+.btnLogout:hover,
+.btnAdd:hover {
+  filter: brightness(92%);
+}
+
+.btnAdd {
+  background-color: var(--color-orange);
+  color: var(--color-black);
+  transition: background-color 300ms ease-in-out;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+}
+
+.search input {
+  border: none;
+  padding-left: 6px;
+  font-size: 1rem;
+  background-color: var(--color-light);
+  border-radius: 8px 0px 0px 8px;
+  border-left: 1px solid var(--color-orange);
+  border-top: 1px solid var(--color-orange);
+  border-bottom: 1px solid var(--color-orange);
+  height: 38px;
+}
+
+.search button {
+  border-right: 1px solid var(--color-orange);
+  border-top: 1px solid var(--color-orange);
+  border-bottom: 1px solid var(--color-orange);
+  background-color: var(--color-light);
+  border-radius: 0px 8px 8px 0px;
+  height: 38px;
+  padding: 4px;
+}
+
+.title {
+  color: var(--color-orange);
+  font-size: 6rem;
+  text-align: center;
+  padding: 42px;
+}
+
+.content {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+}
+
+.contentTable,
+.contentTable thead tr th,
+.contentTable tbody tr td {
+  border: 1px solid var(--color-orange);
+  border-collapse: collapse;
+}
+
+.contentTable thead {
+  background-color: var(--color-black-dark);
+  height: 32px;
+  border-radius: 8px;
+}
+
+.contentTable thead tr th {
+  padding: 12px 0px;
+  font-weight: 500;
+  color: var(--color-orange);
+  text-align: start;
+  padding: 12px;
+}
+
+.contentTable tbody tr td {
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.emptyListPets {
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--color-black);
+}
