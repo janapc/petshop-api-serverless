@@ -14,7 +14,9 @@
 
 ## Project
 
-Register new pets in your petshop using a access token.
+Manager petshop.
+Backend contains the apis user and pet.You can manager your registed of users and pets.
+Petshop contains the front-end application.
 
 ## Requirement
 
@@ -23,6 +25,7 @@ To this project your need to have:
 - Nodejs v18 [Nodejs](https://nodejs.org/en/)
 
 Put your jwtSecret inside **user-api/serverless.yml** and **pet-api/serverless.yml**
+Create .env.local file inside _petshop_ and put two envs **NEXT_PUBLIC_BASE_URL_USER**(user url), **NEXT_PUBLIC_BASE_URL_PET**(pet url)
 
 ## Install
 
@@ -43,39 +46,8 @@ Put your jwtSecret inside **user-api/serverless.yml** and **pet-api/serverless.y
 
 ## Request API
 
-```sh
-## create a new user
-curl --location 'http://localhost:4000/api/user' \
---header 'Content-Type: application/json' \
---data '{
-	"email": "admin@admin.com",
-	"password":"admin123!"
-}'
-
-## get your token to access pet-api
-curl --location 'http://localhost:4000/api/user/login' \
---header 'Content-Type: application/json' \
---data '{
-	"email": "admin@admin.com",
-	"password":"admin123!"
-}'
-
-## register a new pet
-curl --location 'http://localhost:5000/api/pet' \
---header 'Content-Type: application/json' \
---header 'Authorization: youTokenHere' \
---data '{
-	"breed": "husky",
-	"name": "gamora",
-	"birthDay": "11/10/2010",
-	"identifyNumberCustomer": "912839450"
-}'
-
-## list all pets
-curl --location 'http://localhost:5000/api/pet' \
---header 'Authorization: yourTokenHere'
-
-```
+[pet-api](pet-api.sh)
+[user-api](user-api.sh)
 
 ## Technologies
 
