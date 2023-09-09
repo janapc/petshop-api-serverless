@@ -1,11 +1,10 @@
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");
-const { auth, formatResponse } = require("../../utils");
+const { formatResponse } = require("../../utils");
 
 module.exports.handler = async (event) => {
   try {
-    auth.validToken(event);
     const query = event.queryStringParameters;
     const pageNumber = Number(query?.pageNumber) || 0;
     const limit = 10;

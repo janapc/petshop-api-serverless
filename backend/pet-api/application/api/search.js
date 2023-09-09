@@ -1,11 +1,10 @@
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");
-const { auth, formatResponse } = require("../../utils");
+const { formatResponse } = require("../../utils");
 
 module.exports.handler = async (event) => {
   try {
-    auth.validToken(event);
     const params = event.queryStringParameters;
     const repository = petRepository(connection);
     const result = await repository.search(params?.query);

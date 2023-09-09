@@ -1,7 +1,7 @@
 const { PutObjectCommand } = require("@aws-sdk/client-s3");
 const parser = require("lambda-multipart-parser");
 
-const { formatResponse, auth } = require("../../utils");
+const { formatResponse } = require("../../utils");
 const { s3Client } = require("../../service/s3Client");
 
 async function extractFile(event) {
@@ -25,7 +25,6 @@ async function uploadBucketFile({ filename, content }) {
 
 module.exports.handler = async (event) => {
   try {
-    auth.validToken(event);
     const file = await extractFile(event);
     await uploadBucketFile(file);
     return formatResponse({

@@ -1,12 +1,11 @@
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");
-const { bodyHandler, auth, formatResponse } = require("../../utils");
+const { bodyHandler, formatResponse } = require("../../utils");
 
 module.exports.handler = async (event) => {
   try {
     const body = bodyHandler(event);
-    auth.validToken(event);
     const pet = new Pet(body);
     const repository = petRepository(connection);
     await repository.create(pet);

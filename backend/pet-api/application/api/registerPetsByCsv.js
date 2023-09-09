@@ -1,6 +1,7 @@
 const { GetObjectCommand } = require("@aws-sdk/client-s3");
+
 const { s3Client } = require("../../service/s3Client");
-const { convertCsv } = require("../../utils/convertCsv");
+const { convertCsv } = require("../../utils");
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");

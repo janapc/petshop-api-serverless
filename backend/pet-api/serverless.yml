@@ -49,6 +49,11 @@ functions:
       - httpApi:
           path: /api/pet/batch
           method: post
+          authorizer:
+            name: validate
+            type: request
+            enableSimpleResponses: true
+            identitySource: $request.header.Authorization
 
   registerPetsByCsv:
     handler: /application/api/registerPetsByCsv.handler
@@ -65,18 +70,39 @@ functions:
       - httpApi:
           path: /api/pet
           method: post
+          authorizer:
+            name: validate
+            type: request
+            enableSimpleResponses: true
+            identitySource: $request.header.Authorization
+
   listPets:
     handler: /application/api/listPets.handler
     events:
       - httpApi:
           path: /api/pet
           method: get
+          authorizer:
+            name: validate
+            type: request
+            enableSimpleResponses: true
+            identitySource: $request.header.Authorization
+
   search:
     handler: /application/api/search.handler
     events:
       - httpApi:
           path: /api/pet/search
           method: get
+          authorizer:
+            name: validate
+            type: request
+            enableSimpleResponses: true
+            identitySource: $request.header.Authorization
+
+  validate:
+    handler: /application/validate/authorization.handler
+
 custom:
   serverless-offline:
     httpPort: 5000

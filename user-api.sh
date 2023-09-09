@@ -1,5 +1,5 @@
 ## create a new user
-curl --location 'http://localhost:4000/api/user' \
+curl -i --location 'http://localhost:4000/api/user' \
 --header 'Content-Type: application/json' \
 --data '{
 	"email": "admin@admin.com",
@@ -7,7 +7,7 @@ curl --location 'http://localhost:4000/api/user' \
 }'
 
 ## get your token to access pet-api
-curl --location 'http://localhost:4000/api/user/login' \
+curl -i --location 'http://localhost:4000/api/user/login' \
 --header 'Content-Type: application/json' \
 --data '{
 	"email": "admin@admin.com",
