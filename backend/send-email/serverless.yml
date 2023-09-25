@@ -1,0 +1,55 @@
+service: send-email
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: "${opt:stage, 'dev'}"
+  logs:
+    httpApi: true
+  environment: ${file(env-${self:provider.stage}.yml)}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - sqs:*
+          Resource:
+            - Fn::GetAtt: [QueueSendEmail, Arn]
+
+resources:
+  Resources:
+    QueueSendEmail:
+      Type: AWS::SQS:Queue
+      Properties:
+        QueueName: queue-send-email.fifo
+        FifoQueue: true
+        VisibilityTimeout: 10
+
+functions:
+  sendEmailByQueue:
+    handler: /application/sendEmailByQueue.handler
+    timeout: 5
+    events:
+      - sqs:
+          queueName: queue-send-email.fifo
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - QueueSendEmail
+              - Arn
+custom:
+  serverless-offline:
+    host: 0.0.0.0 # for docker container hosting
+    httpPort: 9000
+    websocketPort: 9001
+    lambdaPort: 9002
+  serverless-offline-sqs:
+    endpoint: http://sqs:9324
+    accessKeyId: local
+    secretAccessKey: local
+    autoCreate: true
+
+plugins:
+  - serverless-offline-sqs
+  - serverless-offline

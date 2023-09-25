@@ -1,18 +1,19 @@
 const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
 const petSchema = require("./petSchema");
+const { Log } = require("../../utils");
 
 const filepath = "petShop.sqlite";
 
-function connection() {
+function connectionDb() {
   if (fs.existsSync(filepath)) {
     return new sqlite3.Database(filepath);
   }
   const db = new sqlite3.Database(filepath, (error) => {
-    if (error) console.error(error.message);
+    if (error) Log.error("connectionDb", error.message);
   });
   initialTable(db);
-  console.log("Connection with SQLite has been established");
+  Log.success("connectionDb", "Connection with SQLite has been established");
   return db;
 }
 
@@ -28,4 +29,4 @@ process.on("SIGINT", () =>
   })
 );
 
-module.exports = connection();
+module.exports = connectionDb();

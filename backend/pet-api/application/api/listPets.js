@@ -1,7 +1,7 @@
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");
-const { formatResponse } = require("../../utils");
+const { formatResponse, Log } = require("../../utils");
 
 module.exports.handler = async (event) => {
   try {
@@ -27,7 +27,7 @@ module.exports.handler = async (event) => {
       body: result,
     });
   } catch (error) {
-    console.log(error.message);
+    Log.error("listPets", error.message);
     return formatResponse({
       statusCode: error.code || 500,
       body: {

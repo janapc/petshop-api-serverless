@@ -1,0 +1,3 @@
+#!/bin/sh
+aws sqs --endpoint-url ${AWS_ENDPOINT_URL} create-queue --queue-name dlq-register-pet.fifo --attributes FifoQueue=true,MessageRetentionPeriod=86400
+aws sqs --endpoint-url ${AWS_ENDPOINT_URL} create-queue --queue-name queue-register-pet.fifo --attributes '{ "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:eu-west-1:000000000000:dlq-register-pet.fifo\",\"maxReceiveCount\":\"5\"}","VisibilityTimeout": "10", "FifoQueue":"true" }'

@@ -1,0 +1,13 @@
+#auth
+JWT_SECRET: ##secret
+#s3
+S3_ACCESSKEY: ## access key
+S3_SECRETKEY: ## secret key
+S3_ENDPOINT: ## endpoint
+S3_BUCKET: ## bucket name
+#sqs
+SQS_QUEUE_ACCESSKEY: ## access key
+SQS_QUEUE_SECRETKEY: ## secret key
+SQS_QUEUE_ENDPOINT: ## endpoint
+SQS_QUEUE_REGISTER_PET_NAME: ## queue name
+SQS_QUEUE_SEND_EMAIL_NAME: ## queue name

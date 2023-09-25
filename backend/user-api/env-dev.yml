@@ -1,0 +1,8 @@
+#auth
+SALT: ## salt
+JWT_SECRET: ## secret
+#sqs
+SQS_QUEUE_ACCESSKEY: ## access key
+SQS_QUEUE_SECRETKEY: ## secret key
+SQS_QUEUE_ENDPOINT: ## endpoint
+SQS_QUEUE_SEND_EMAIL_NAME: ## queue name

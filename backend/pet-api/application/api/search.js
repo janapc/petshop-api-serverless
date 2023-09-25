@@ -1,7 +1,7 @@
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");
-const { formatResponse } = require("../../utils");
+const { formatResponse, Log } = require("../../utils");
 
 module.exports.handler = async (event) => {
   try {
@@ -14,14 +14,13 @@ module.exports.handler = async (event) => {
         body: { error: "pet not found" },
       });
     }
-
     const pets = result.map((pet) => new Pet(pet));
     return formatResponse({
       statusCode: 200,
       body: pets,
     });
   } catch (error) {
-    console.log(error.message);
+    Log.error("search", error.message);
     return formatResponse({
       statusCode: error.code || 500,
       body: {

@@ -1,0 +1,5 @@
+#email
+EMAIL_HOST: ## host
+EMAIL_PORT: ##port
+EMAIL_AUTH_USER: ## user
+EMAIL_AUTH_PASS: ## password

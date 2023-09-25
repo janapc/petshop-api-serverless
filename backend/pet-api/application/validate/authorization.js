@@ -1,4 +1,4 @@
-const { verify } = require("jsonwebtoken");
+const { verifyToken } = require("../../utils");
 
 module.exports.handler = async (event) => {
   const { Authorization: auth } = event.headers;
@@ -8,16 +8,7 @@ module.exports.handler = async (event) => {
       isAuthorized: false,
     };
   }
-  const decodedToken = verify(
-    token,
-    process.env.JWT_SECRET,
-    {
-      audience: "api-users",
-    },
-    function (_, decoded) {
-      return decoded ? decoded : null;
-    }
-  );
+  const decodedToken = verifyToken(token);
   if (!decodedToken) {
     return {
       isAuthorized: false,

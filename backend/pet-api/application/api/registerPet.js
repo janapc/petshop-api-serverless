@@ -1,7 +1,7 @@
 const Pet = require("../../domain/Pet");
 const petRepository = require("../../infra/repository");
 const connection = require("../../infra/connect");
-const { bodyHandler, formatResponse } = require("../../utils");
+const { bodyHandler, formatResponse, Log } = require("../../utils");
 
 module.exports.handler = async (event) => {
   try {
@@ -11,7 +11,7 @@ module.exports.handler = async (event) => {
     await repository.create(pet);
     return formatResponse({ statusCode: 201 });
   } catch (error) {
-    console.log(error.message);
+    Log.error("registerPet", error.message);
     return formatResponse({
       statusCode: error.code || 500,
       body: {

@@ -4,6 +4,7 @@ const {
   ErrorHandler,
   formatResponse,
   auth,
+  Log,
 } = require("../../utils");
 const userRepository = require("../../infra/database/repository");
 const connection = require("../../infra/database/connect");
@@ -29,7 +30,7 @@ module.exports.handler = async (event) => {
       body: { token, expiresIn },
     });
   } catch (error) {
-    console.log(error.message);
+    Log.error("signInUser", error.message);
     return formatResponse({
       statusCode: error.code || 500,
       body: {

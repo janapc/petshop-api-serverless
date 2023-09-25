@@ -1,17 +1,13 @@
 service: api-users
 frameworkVersion: "3"
 
-params:
-  dev:
-    salt: 9b3770814adbe509afcaf65e974f84309097c945
-    jwtSecret: #putyourjwtsecrethere
-
 provider:
   name: aws
   runtime: nodejs18.x
-  environment:
-    SALT: ${param:salt}
-    JWT_SECRET: ${param:jwtSecret}
+  stage: "${opt:stage, 'dev'}"
+  logs:
+    httpApi: true
+  environment: ${file(env-${self:provider.stage}.yml)}
 
 functions:
   createUser:
@@ -28,6 +24,7 @@ functions:
           method: post
 custom:
   serverless-offline:
+    host: 0.0.0.0 # for docker container hosting
     httpPort: 4000
     websocketPort: 4001
     lambdaPort: 4002

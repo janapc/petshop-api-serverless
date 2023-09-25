@@ -1,15 +1,52 @@
 service: api-petShop
 frameworkVersion: "3"
 
-params:
-  dev:
-    jwtSecret: #putyourjwtsecrethere
-    accessKeyIdS3: "S3RVER"
-    secretAccessKeyS3: "S3RVER"
-    endpointS3: "http://localhost:4569"
-    bucketS3: "pets-csv"
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: "${opt:stage, 'dev'}"
+  environment: ${file(env-${self:provider.stage}.yml)}
+  httpApi:
+    authorizers:
+      validate:
+        type: request
+        functionName: validate
+        enableSimpleResponses: true
+        identitySource: $request.header.Authorization
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::pets-csv/*
+        - Effect: Allow
+          Action:
+            - sqs:*
+          Resource:
+            - Fn::GetAtt: [QueueRegisterPet, Arn]
 
 resources:
+  Resources:
+    DlqRegisterPet:
+      Type: AWS::SQS:Queue
+      Properties:
+        QueueName: dlq-register-pet.fifo
+        FifoQueue: true
+        MessageRetentionPeriod: 86400
+    QueueRegisterPet:
+      Type: AWS::SQS:Queue
+      Properties:
+        QueueName: queue-register-pet.fifo
+        FifoQueue: true
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - DlqRegisterPet
+              - Arn
+          maxReceiveCount: 5
+        VisibilityTimeout: 10
   extensions:
     S3BucketPetscsv:
       Properties:
@@ -24,42 +61,21 @@ resources:
               AllowedHeaders:
                 - "*"
 
-provider:
-  name: aws
-  runtime: nodejs18.x
-  environment:
-    JWT_SECRET: ${param:jwtSecret}
-    S3_ACCESSKEY: ${param:accessKeyIdS3}
-    S3_SECRETKEY: ${param:secretAccessKeyS3}
-    S3_ENDPOINT: ${param:endpointS3}
-    S3_BUCKET: ${param:bucketS3}
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - s3:GetObject
-          Resource:
-            - arn:aws:s3:::pets-csv/*
-
 functions:
-  uploadPetsByCsv:
-    handler: /application/api/uploadPetsByCsv.handler
+  uploadByCsv:
+    handler: /application/api/uploadByCsv.handler
     events:
       - httpApi:
           path: /api/pet/batch
           method: post
           authorizer:
             name: validate
-            type: request
-            enableSimpleResponses: true
-            identitySource: $request.header.Authorization
 
-  registerPetsByCsv:
-    handler: /application/api/registerPetsByCsv.handler
+  sendPetsQueue:
+    handler: /application/api/sendPetsQueue.handler
     events:
       - s3:
-          bucket: ${param:bucketS3}
+          bucket: ${file(env-${self:provider.stage}.yml):S3_BUCKET}
           event: s3:ObjectCreated:*
           rules:
             - suffix: .csv
@@ -72,9 +88,6 @@ functions:
           method: post
           authorizer:
             name: validate
-            type: request
-            enableSimpleResponses: true
-            identitySource: $request.header.Authorization
 
   listPets:
     handler: /application/api/listPets.handler
@@ -84,9 +97,6 @@ functions:
           method: get
           authorizer:
             name: validate
-            type: request
-            enableSimpleResponses: true
-            identitySource: $request.header.Authorization
 
   search:
     handler: /application/api/search.handler
@@ -96,19 +106,46 @@ functions:
           method: get
           authorizer:
             name: validate
-            type: request
-            enableSimpleResponses: true
-            identitySource: $request.header.Authorization
+
+  registerPetsByQueue:
+    handler: /application/api/registerPetsByQueue.handler
+    timeout: 2
+    events:
+      - sqs:
+          queueName: queue-register-pet.fifo
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - QueueRegisterPet
+              - Arn
+  handlerErrorDLQ:
+    handler: /application/api/handlerErrorDLQ.handler
+    timeout: 2
+    events:
+      - sqs:
+          queueName: dlq-register-pet.fifo
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - DlqRegisterPet
+              - Arn
 
   validate:
     handler: /application/validate/authorization.handler
 
 custom:
   serverless-offline:
-    httpPort: 5000
-    websocketPort: 5001
-    lambdaPort: 5002
+    host: 0.0.0.0 # for docker container hosting
+    httpPort: 8000
+    websocketPort: 8001
+    lambdaPort: 8002
+  serverless-offline-sqs:
+    endpoint: http://sqs:9324
+    accessKeyId: local
+    secretAccessKey: local
+    autoCreate: false
 
 plugins:
-  - serverless-offline
+  - serverless-offline-sqs
   - serverless-s3-local
+  - serverless-offline

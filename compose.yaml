@@ -1,0 +1,40 @@
+services:
+  sqs:
+    image: softwaremill/elasticmq-native:latest
+    ports:
+      - "9324:9324"
+    command: "-Dnode-address.host=\"*\""
+  sqs-create:
+    image: amazon/aws-cli:latest
+    entrypoint: sh
+    command: create-queues.sh
+    volumes:
+      - ./scripts/create-queues.sh:/aws/create-queues.sh:ro
+    environment:
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ENDPOINT_URL=http://sqs:9324
+  pet-api:
+    build: ./backend/pet-api/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - sqs-create
+  user-api:
+    build: ./backend/user-api/
+    ports:
+      - "4000:4000"
+  send-email:
+    build: ./backend/send-email/
+    ports:
+      - "9000:9000"
+    depends_on:
+      - sqs-create
+  petshop:
+    build: ./petshop/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - pet-api
+      - user-api
